@@ -1,0 +1,75 @@
+<div class="container py-4">
+
+  <div class="navbar-box d-flex justify-content-between align-items-center mb-4">
+    <h3 style="color:#009688;font-weight:bold">Pharmoly 🍃</h3>
+    <input class="form-control w-50" placeholder="Search cart..." ng-model="searchText">
+    <a href="#!/" class="btn position-relative" style="background:#009688;color:white">
+      <i class="fa fa-cart-shopping"></i>
+      <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">{{cart.length}}</span>
+    </a>
+  </div>
+
+  <div class="mb-3">
+    <a href="#!/" class="text-decoration-none me-3" style="color:#009688;">← Home</a>
+    <a href="#!/products" class="text-decoration-none" style="color:#009688;">Shop</a>
+  </div>
+
+  <h4 style="color:#009688;font-weight:700" class="mb-4">
+    <i class="fa fa-receipt me-2"></i>My Cart
+  </h4>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div ng-if="cart.length == 0" class="text-center py-5 text-muted">
+        <i class="fa fa-cart-shopping fa-3x mb-3" style="color:#c8e6e3"></i>
+        <p>Your cart is empty. <a href="#!/products" style="color:#009688">Go shop!</a></p>
+      </div>
+      <div class="cart-card d-flex align-items-center gap-3" ng-repeat="item in cart | filter:searchText">
+        <img ng-src="{{item.image || item.image_url}}" alt="{{item.name}}">
+        <div class="flex-grow-1">
+          <h6 class="fw-bold mb-0">{{item.name}}</h6>
+          <small class="text-muted">{{item.category}}</small>
+          <div class="text-warning">
+            <i class="fa-solid fa-star" ng-repeat="i in [].constructor(item.rating) track by $index"></i>
+          </div>
+          <div class="price">${{item.price}}
+            <span class="text-muted text-decoration-line-through ms-1" ng-if="item.oldPrice">${{item.oldPrice}}</span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm btn-outline-success rounded-pill" ng-click="changeQty(item,-1)">-</button>
+          <span class="fw-bold">{{item.qty}}</span>
+          <button class="btn btn-sm btn-outline-success rounded-pill" ng-click="changeQty(item,1)">+</button>
+        </div>
+        <span class="price">${{(item.price * item.qty).toFixed(2)}}</span>
+        <button class="btn btn-sm btn-outline-danger rounded-pill" ng-click="removeItem(item)">
+          <i class="fa fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="col-lg-4" ng-if="cart.length > 0">
+      <div class="summary-box">
+        <h5 class="fw-bold mb-3">Order Summary</h5>
+        <div class="d-flex justify-content-between mb-2 text-muted" ng-repeat="item in cart">
+          <span>
+            <img ng-src="{{item.image || item.image_url}}" style="width:24px;height:24px;object-fit:contain;border-radius:6px" alt="">
+            {{item.name}} x{{item.qty}}
+          </span>
+          <span class="price">${{(item.price * item.qty).toFixed(2)}}</span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5">
+          <span style="color:#009688">Total</span>
+          <span style="color:#009688">${{total().toFixed(2)}}</span>
+        </div>
+        <button class="btn w-100 mt-3 rounded-pill fw-bold" style="background:#009688;color:white"
+                ng-click="submitOrder()" ng-disabled="submitting">
+          <span ng-if="!submitting"><i class="fa fa-check-circle me-2"></i>Submit Order</span>
+          <span ng-if="submitting">Placing order...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

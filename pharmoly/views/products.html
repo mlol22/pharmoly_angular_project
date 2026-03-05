@@ -1,0 +1,97 @@
+<div class="container py-4">
+
+  <div class="navbar-box d-flex justify-content-between align-items-center">
+    <h3 style="color:#009688;font-weight:bold">Pharmoly 🍃</h3>
+    <input class="form-control w-50" placeholder="Search products..." ng-model="searchText">
+    <a href="#!/cart" class="btn position-relative" style="background:#009688;color:white">
+      <i class="fa fa-cart-shopping"></i>
+      <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">{{cart.length}}</span>
+    </a>
+  </div>
+
+  <div class="text-center my-4">
+    <a href="#!/" class="btn btn-outline-secondary category-btn">← Home</a>
+    <button class="btn btn-outline-success category-btn" ng-click="loadProducts()">All</button>
+    <button class="btn btn-outline-success category-btn" ng-click="loadProducts('supplements')">Supplements</button>
+    <button class="btn btn-outline-success category-btn" ng-click="loadProducts('medicines')">Medicines</button>
+    <button class="btn btn-outline-success category-btn" ng-click="loadProducts('herbs')">Herbs</button>
+    <button class="btn btn-outline-success category-btn" ng-click="loadProducts('beauty')">Beauty</button>
+    <button class="btn btn-outline-success category-btn" ng-click="loadProducts('health')">Health</button>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center gap-3 mb-4 flex-wrap">
+    <select class="form-control w-auto" ng-model="sortType" ng-change="sortProducts()">
+      <option value="">Sort Products</option>
+      <option value="priceLow">Price Low → High</option>
+      <option value="priceHigh">Price High → Low</option>
+      <option value="nameAsc">Name A → Z</option>
+      <option value="nameDesc">Name Z → A</option>
+    </select>
+    <select class="form-control w-auto" ng-model="filterRating" ng-change="applyFilter()">
+  <option value="">All Ratings</option>
+  <option value="1">⭐ 1 Star</option>
+  <option value="2">⭐⭐ 2 Stars</option>
+  <option value="3">⭐⭐⭐ 3 Stars</option>
+  <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+  <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+</select>
+    <select class="form-control w-auto" ng-model="filterPrice" ng-change="applyFilter()">
+      <option value="">All Prices</option>
+      <option value="0-25">Under $25</option>
+      <option value="25-50">$25 – $50</option>
+      <option value="50-999">Over $50</option>
+    </select>
+    <button class="btn btn-outline-secondary rounded-pill" ng-if="filterRating || filterPrice" ng-click="clearFilters()">
+      Clear Filters
+    </button>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-3 col-md-4 col-6" ng-repeat="product in filteredProducts | filter:searchText">
+      <div class="product-card position-relative">
+       <div ng-if="product.badge" class="badge-custom"
+     ng-class="{
+       'badge-sale':    product.badge === 'Sale',
+       'badge-hot':     product.badge === 'Hot',
+       'badge-new':     product.badge === 'New',
+       'badge-popular': product.badge === 'Popular'
+     }">{{product.badge}}</div>
+        <img ng-src="{{product.image}}" class="img-fluid mb-3">
+        <h6 class="fw-bold">{{product.name}}</h6>
+        <div class="text-warning mb-2">
+          <i class="fa-solid fa-star" ng-repeat="i in [].constructor(product.rating) track by $index"></i>
+        </div>
+        <div class="mb-2">
+  <span class="price">${{product.price}}</span>
+  <span ng-if="product.oldPrice" class="text-muted text-decoration-line-through ms-2">${{product.oldPrice}}</span>
+  <span ng-if="product.oldPrice" class="ms-2 text-white rounded-pill px-2 py-1" style="background:#e53935; font-size:11px;">
+    -{{Math.round((product.oldPrice - product.price) / product.oldPrice * 100)}}%
+  </span>
+</div>
+        <button class="btn btn-success w-100" ng-click="addToCart(product)">Add To Cart</button>
+      </div>
+    </div>
+    <div class="col-12 text-center py-5 text-muted" ng-if="filteredProducts.length === 0">
+      <i class="fa fa-box-open fa-3x mb-3" style="color:#c8e6e3"></i>
+      <p>No products match your filters.</p>
+    </div>
+  </div>
+
+  <div class="banner text-center">
+    <h2 class="fw-bold">Vitamins & Supplements</h2>
+    <p class="text-muted">Up to 40% discount on selected products</p>
+    <button class="btn btn-success px-4 rounded-pill">Shop Now</button>
+  </div>
+
+  <h3 class="text-center mb-4">Featured Products</h3>
+  <div class="row g-4">
+    <div class="col-lg-3 col-md-4 col-6" ng-repeat="product in featuredProducts">
+      <div class="product-card">
+        <img ng-src="{{product.image}}" class="img-fluid">
+        <h6>{{product.name}}</h6>
+        <div class="price">${{product.price}}</div>
+      </div>
+    </div>
+  </div>
+
+</div>

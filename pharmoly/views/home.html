@@ -1,0 +1,218 @@
+<div class="bg-light py-2 small">
+  <div class="container d-flex justify-content-between">
+    <div>Free shipping on orders over $50</div>
+    <div>Support 24/7 - 010-456-6782</div>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
+  <div class="container">
+    <h1 class="text-primary position-relative" style="font-weight:bold;display:inline-block;">
+      Pharmoly<span style="position:absolute;top:-15px;left:5px;">🍃</span>
+    </h1>
+    <div class="input-group mx-4 flex-grow-1">
+      <input type="text" class="form-control" placeholder="What are you looking for?" ng-model="searchText">
+      <button class="btn btn-warning"><i class="bi bi-search"></i></button>
+    </div>
+    <div class="d-flex align-items-center gap-4">
+      <i class="fa-regular fa-heart fs-5"></i>
+      <a href="#!/cart" class="btn position-relative text-white" style="background:#009688;">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{cartCount}}</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="bg-white border-top border-bottom py-2">
+  <div class="container d-flex gap-4">
+    <a class="text-decoration-none text-dark">All Categories</a>
+    <a href="#!/" class="me-3 text-dark">Home</a>
+    <a href="#!/products" class="text-dark">Shop</a>
+    <a href="#!/cart" class="text-dark">Cart</a>
+  </div>
+</div>
+
+<section class="py-5" style="background:#c7dfdc;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h1 class="fw-bold display-5">Sanitize For Safety <br> Protect Your Health</h1>
+        <p class="text-muted mt-3">Discover trusted healthcare products from leading brands.</p>
+        <a href="#!/products" class="btn text-white mt-3 px-4" style="background:#009688;">Shop Now</a>
+      </div>
+      <div class="col-md-6 text-center">
+       <img src="https://images.unsplash.com/photo-1584744982491-665216d95f8b?w=600&q=80"
+     class="img-fluid" style="max-height:420px; border-radius:16px;" alt="Hand Sanitizer">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-md-3 col-6" ng-repeat="badge in trustBadges">
+        <div class="trust-box">
+          <i class="{{badge.icon}}"></i>
+          <h6>{{badge.title}}</h6>
+          <p>{{badge.desc}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container text-center">
+    <div class="row g-4">
+     <div class="col-md-2" ng-repeat="cat in categories">
+  <a href="#!/products/{{cat.cat}}" class="text-decoration-none text-dark">
+    <div class="category-box shadow-sm">
+      <i class="{{cat.icon}} fs-3 text-success mb-2"></i>
+      <div>{{cat.name}}</div>
+    </div>
+  </a>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <h3 class="text-center fw-bold mb-5" style="color:#009688;">Best Sellers</h3>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6" ng-repeat="product in products | filter:searchText">
+        <div class="card border-0 shadow-sm rounded-4 h-100 position-relative">
+          <div ng-if="product.sale" class="position-absolute bg-success text-white px-3 py-1" style="top:15px;left:15px;border-radius:20px;">Sale</div>
+          <img ng-src="{{product.image}}" class="card-img-top p-4" style="height:220px;object-fit:contain;">
+          <div class="card-body text-center">
+            <h6 class="fw-bold">{{product.name}}</h6>
+            <div class="text-warning mb-2">
+              <i class="fa-solid fa-star" ng-repeat="i in [].constructor(product.rating) track by $index"></i>
+            </div>
+            <p>
+              <span class="fw-bold">${{product.price}}</span>
+              <span ng-if="product.oldprice" class="text-muted text-decoration-line-through ms-2">${{product.oldprice}}</span>
+            </p>
+            <button class="btn w-100 text-white" style="background:#009688;" ng-click="addToCart(product)">Add To Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h3 class="text-center fw-bold mb-5" style="color:#009688;">What Our Customers Say</h3>
+    <div class="row g-4">
+      <div class="col-md-4" ng-repeat="review in testimonials">
+        <div class="testimonial-card">
+          <div class="text-warning mb-3">
+            <i class="fa-solid fa-star" ng-repeat="i in [].constructor(review.rating) track by $index"></i>
+          </div>
+          <p>"{{review.comment}}"</p>
+          <div class="d-flex align-items-center gap-3 mt-3">
+            <img ng-src="{{review.avatar}}" class="avatar" alt="">
+            <div>
+              <div class="tname">{{review.name}}</div>
+              <div class="trole">{{review.role}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="newsletter-section">
+      <h3>💊 Stay Healthy, Stay Informed</h3>
+      <p class="mb-4">Subscribe to get exclusive deals, health tips and new arrivals.</p>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="email" class="form-control" ng-model="email" placeholder="Enter your email"
+                   style="border-radius:25px 0 0 25px;border:none;padding:12px 20px;">
+            <button class="btn" ng-click="subscribe()"
+                    style="border-radius:0 25px 25px 0;background:#004d40;color:white;padding:12px 24px;font-weight:600;">
+              Subscribe
+            </button>
+          </div>
+          <div class="mt-2 text-white small" ng-if="subscribed">✓ Thank you for subscribing!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-white pt-5 border-top">
+  <div class="container">
+    <div class="row text-muted small">
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h6 class="fw-bold text-dark mb-3">About us</h6>
+        <h4 class="fw-bold" style="color:#009688;">9876 788 - HGGY - 888</h4>
+        <p class="mb-1">Monday - Friday: 8:00 - 20:00</p>
+        <p class="mb-3">Saturday: 9:00 - 15:00</p>
+        <p class="mb-1">info@pharmoly.com</p>
+        <p>70 Washington Square South,<br>New York, NY 10012, United States</p>
+        <a href="#" class="text-decoration-none" style="color:#009688;">Show on map</a>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="fw-bold text-dark mb-3">Information</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-muted text-decoration-none">About us</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Delivery information</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Privacy Policy</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="fw-bold text-dark mb-3">Account</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-muted text-decoration-none">Dashboard</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">My orders</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Returns</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Wish list</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="fw-bold text-dark mb-3">Popular</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-muted text-decoration-none">Herbs</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Medicines</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Protein</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Vitamins</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h6 class="fw-bold text-dark mb-3">Useful</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Contact us</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Career</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row text-center py-4 border-top border-bottom">
+      <div class="col-md-4"><i class="fa-solid fa-rotate-left me-2" style="color:#009688;"></i>100% Money back</div>
+      <div class="col-md-4"><i class="fa-solid fa-truck me-2" style="color:#009688;"></i>Non-contact shipping</div>
+      <div class="col-md-4"><i class="fa-solid fa-box me-2" style="color:#009688;"></i>Free delivery over $200</div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center py-4">
+      <div>
+        <h4 class="fw-bold m-0" style="color:#009688;">pharmoly</h4>
+        <small class="text-muted">Copyright 2025 © Pharmoly. All rights reserved.</small>
+      </div>
+      <div class="fs-4 text-muted">
+        <i class="fa-brands fa-paypal me-3"></i>
+        <i class="fa-brands fa-cc-mastercard me-3"></i>
+        <i class="fa-brands fa-cc-visa"></i>
+      </div>
+    </div>
+  </div>
+</footer>

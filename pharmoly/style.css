@@ -46,3 +46,11 @@ body { font-family: Poppins, sans-serif; background: #f7fbfa; }
 .avatar { width:46px; height:46px; border-radius:50%; object-fit:cover; border:2px solid #009688; }
 
 .newsletter-section { background:linear-gradient(135deg,#009688,#4db6ac); border-radius:20px; padding:50px 40px; color:white; text-align:center; }
+.product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card .btn {
+  margin-top: auto;
+}

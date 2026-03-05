@@ -9,7 +9,7 @@ app.controller('HomeController', function($scope, $http, SUPABASE_URL, SUPABASE_
 
   $scope.cartCount  = JSON.parse(localStorage.getItem('cart') || '[]').length;
   $scope.subscribed = false;
-  $scope.Math = Math;
+  $scope.Math       = Math;
 
   $scope.trustBadges = [
     { icon:"fa-solid fa-shield-halved", title:"100% Authentic",  desc:"All products are verified and genuine" },
@@ -19,12 +19,12 @@ app.controller('HomeController', function($scope, $http, SUPABASE_URL, SUPABASE_
   ];
 
   $scope.categories = [
-    {name:"Baby",      icon:"fa-solid fa-baby",        cat:"baby"},
-    {name:"Beauty",    icon:"fa-solid fa-spa",          cat:"beauty"},
-    {name:"Grocery",   icon:"fa-solid fa-cart-plus",    cat:"grocery"},
-    {name:"Health",    icon:"fa-solid fa-heart-pulse",  cat:"health"},
-    {name:"Herbs",     icon:"fa-solid fa-leaf",         cat:"herbs"},
-    {name:"Medicines", icon:"fa-solid fa-pills",        cat:"medicines"}
+    {name:"Baby",      icon:"fa-solid fa-baby",       cat:"baby"},
+    {name:"Beauty",    icon:"fa-solid fa-spa",         cat:"beauty"},
+    {name:"Grocery",   icon:"fa-solid fa-cart-plus",   cat:"grocery"},
+    {name:"Health",    icon:"fa-solid fa-heart-pulse", cat:"health"},
+    {name:"Herbs",     icon:"fa-solid fa-leaf",        cat:"herbs"},
+    {name:"Medicines", icon:"fa-solid fa-pills",       cat:"medicines"}
   ];
 
   $scope.testimonials = [
@@ -33,10 +33,15 @@ app.controller('HomeController', function($scope, $http, SUPABASE_URL, SUPABASE_
     { name:"Lina T.",   role:"Health Enthusiast", rating:4, comment:"Love the variety of products. The protein powder arrived quickly and tastes great!", avatar:"https://i.pravatar.cc/150?img=32" }
   ];
 
-  $scope.products = [];
+  $scope.products         = [];
+  $scope.featuredProducts = [];
 
   $http.get(SUPABASE_URL + "/home_products?select=*", config).then(function(res) {
     $scope.products = res.data;
+  });
+
+  $http.get(SUPABASE_URL + "/products?featured=eq.true&select=*", config).then(function(res) {
+    $scope.featuredProducts = res.data;
   });
 
   $scope.addToCart = function(product) {
@@ -44,6 +49,11 @@ app.controller('HomeController', function($scope, $http, SUPABASE_URL, SUPABASE_
     cart.push(product);
     localStorage.setItem('cart', JSON.stringify(cart));
     $scope.cartCount++;
+    $scope.addedProduct = product.name;
+    $scope.showMessage  = true;
+    setTimeout(function() {
+      $scope.$apply(function() { $scope.showMessage = false; });
+    }, 3000);
   };
 
   $scope.subscribe = function() {

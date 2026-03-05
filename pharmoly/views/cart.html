@@ -18,18 +18,20 @@
     <i class="fa fa-receipt me-2"></i>My Cart
   </h4>
 
-  <!-- SUCCESS MESSAGE -->
+
   <div class="p-3 rounded-3 text-center mb-4"
        style="background:#e8f5e9; color:#2e7d32;"
        ng-if="orderSuccess">
     <i class="fa fa-check-circle me-2"></i> Your order has been placed successfully!
+    <div class="mt-1 small">Redirecting to home in {{countdown}} seconds...</div>
   </div>
 
-  <!-- CANCELLED MESSAGE -->
+
   <div class="p-3 rounded-3 text-center mb-4"
        style="background:#ffebee; color:#c62828;"
        ng-if="orderCancelled">
     <i class="fa fa-xmark me-2"></i> Your order has been cancelled.
+    <div class="mt-1 small">Redirecting to home in {{countdown}} seconds...</div>
   </div>
 
   <div class="row g-4">
@@ -60,14 +62,15 @@
         </div>
         <span class="price">${{(item.price * item.qty).toFixed(2)}}</span>
         <button class="btn btn-sm btn-outline-danger rounded-pill" ng-click="removeItem(item)">
+
           <i class="fa fa-xmark"></i>
         </button>
       </div>
     </div>
 
     <div class="col-lg-4">
-
       <div class="summary-box" ng-if="cart.length > 0">
+
         <h5 class="fw-bold mb-3">Order Summary</h5>
         <div class="d-flex justify-content-between mb-2 text-muted" ng-repeat="item in cart">
           <span>
@@ -95,7 +98,7 @@
         </button>
       </div>
 
-      <!-- SHOW CANCEL AFTER ORDER SUBMITTED -->
+      
       <div class="summary-box text-center" ng-if="orderSuccess">
         <p class="text-muted mb-3">Changed your mind?</p>
         <button class="btn w-100 rounded-pill fw-bold btn-outline-danger"

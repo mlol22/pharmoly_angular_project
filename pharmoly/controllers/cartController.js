@@ -5,6 +5,7 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
   $scope.orderSuccess   = false;
   $scope.orderCancelled = false;
   $scope.lastOrderId    = null;
+  $scope.countdown      = 0;
 
   function groupCart(raw) {
     var map = {};
@@ -45,6 +46,7 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
     localStorage.removeItem('cart');
     $scope.orderCancelled = true;
     $scope.orderSuccess   = false;
+    $scope.countdown      = 10;
 
     if ($scope.lastOrderId) {
       fetch(SUPABASE_URL + "/orders?id=eq." + $scope.lastOrderId, {
@@ -56,6 +58,14 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
       });
       $scope.lastOrderId = null;
     }
+
+    var timer = setInterval(function() {
+      $scope.$apply(function() { $scope.countdown--; });
+      if ($scope.countdown <= 0) {
+        clearInterval(timer);
+        window.location.href = '#!/';
+      }
+    }, 1000);
   };
 
   $scope.submitOrder = function() {
@@ -90,6 +100,15 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
             localStorage.removeItem('cart');
             $scope.orderSuccess   = true;
             $scope.orderCancelled = false;
+            $scope.countdown      = 30;
+
+            var timer = setInterval(function() {
+              $scope.$apply(function() { $scope.countdown--; });
+              if ($scope.countdown <= 0) {
+                clearInterval(timer);
+                window.location.href = '#!/';
+              }
+            }, 1000);
           }
         });
       });
@@ -100,6 +119,15 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
         localStorage.removeItem('cart');
         $scope.orderSuccess   = true;
         $scope.orderCancelled = false;
+        $scope.countdown      = 30;
+
+        var timer = setInterval(function() {
+          $scope.$apply(function() { $scope.countdown--; });
+          if ($scope.countdown <= 0) {
+            clearInterval(timer);
+            window.location.href = '#!/';
+          }
+        }, 1000);
       }, 1000);
     });
   };

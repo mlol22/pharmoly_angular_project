@@ -1,5 +1,5 @@
 app.controller('ProductController', function($scope, $http, SUPABASE_URL, SUPABASE_KEY) {
-
+$scope.Math = Math;
   var config = {
     headers: {
       "apikey": SUPABASE_KEY,

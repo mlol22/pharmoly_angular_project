@@ -18,13 +18,30 @@
     <i class="fa fa-receipt me-2"></i>My Cart
   </h4>
 
+  <!-- SUCCESS MESSAGE -->
+  <div class="p-3 rounded-3 text-center mb-4"
+       style="background:#e8f5e9; color:#2e7d32;"
+       ng-if="orderSuccess">
+    <i class="fa fa-check-circle me-2"></i> Your order has been placed successfully!
+  </div>
+
+  <!-- CANCELLED MESSAGE -->
+  <div class="p-3 rounded-3 text-center mb-4"
+       style="background:#ffebee; color:#c62828;"
+       ng-if="orderCancelled">
+    <i class="fa fa-xmark me-2"></i> Your order has been cancelled.
+  </div>
+
   <div class="row g-4">
+
     <div class="col-lg-8">
-      <div ng-if="cart.length == 0" class="text-center py-5 text-muted">
+      <div ng-if="cart.length == 0 && !orderSuccess && !orderCancelled" class="text-center py-5 text-muted">
         <i class="fa fa-cart-shopping fa-3x mb-3" style="color:#c8e6e3"></i>
         <p>Your cart is empty. <a href="#!/products" style="color:#009688">Go shop!</a></p>
       </div>
-      <div class="cart-card d-flex align-items-center gap-3" ng-repeat="item in cart | filter:searchText">
+
+      <div class="cart-card d-flex align-items-center gap-3"
+           ng-repeat="item in cart | filter:searchText">
         <img ng-src="{{item.image || item.image_url}}" alt="{{item.name}}">
         <div class="flex-grow-1">
           <h6 class="fw-bold mb-0">{{item.name}}</h6>
@@ -48,8 +65,9 @@
       </div>
     </div>
 
-    <div class="col-lg-4" ng-if="cart.length > 0">
-      <div class="summary-box">
+    <div class="col-lg-4">
+
+      <div class="summary-box" ng-if="cart.length > 0">
         <h5 class="fw-bold mb-3">Order Summary</h5>
         <div class="d-flex justify-content-between mb-2 text-muted" ng-repeat="item in cart">
           <span>
@@ -63,13 +81,30 @@
           <span style="color:#009688">Total</span>
           <span style="color:#009688">${{total().toFixed(2)}}</span>
         </div>
-        <button class="btn w-100 mt-3 rounded-pill fw-bold" style="background:#009688;color:white"
+
+        <button class="btn w-100 mt-3 rounded-pill fw-bold"
+                style="background:#009688;color:white"
                 ng-click="submitOrder()" ng-disabled="submitting">
           <span ng-if="!submitting"><i class="fa fa-check-circle me-2"></i>Submit Order</span>
           <span ng-if="submitting">Placing order...</span>
         </button>
-      </div>
-    </div>
-  </div>
 
+        <button class="btn w-100 mt-2 rounded-pill fw-bold btn-outline-danger"
+                ng-click="cancelOrder()">
+          <i class="fa fa-xmark me-1"></i> Cancel Order
+        </button>
+      </div>
+
+      <!-- SHOW CANCEL AFTER ORDER SUBMITTED -->
+      <div class="summary-box text-center" ng-if="orderSuccess">
+        <p class="text-muted mb-3">Changed your mind?</p>
+        <button class="btn w-100 rounded-pill fw-bold btn-outline-danger"
+                ng-click="cancelOrder()">
+          <i class="fa fa-xmark me-1"></i> Cancel Order
+        </button>
+      </div>
+
+    </div>
+
+  </div>
 </div>

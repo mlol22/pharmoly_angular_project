@@ -1,7 +1,10 @@
 app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABASE_KEY) {
 
-  $scope.searchText = '';
-  $scope.submitting = false;
+  $scope.searchText     = '';
+  $scope.submitting     = false;
+  $scope.orderSuccess   = false;
+  $scope.orderCancelled = false;
+  $scope.lastOrderId    = null;
 
   function groupCart(raw) {
     var map = {};
@@ -37,6 +40,24 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
     return $scope.cart.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
   };
 
+  $scope.cancelOrder = function() {
+    $scope.cart           = [];
+    localStorage.removeItem('cart');
+    $scope.orderCancelled = true;
+    $scope.orderSuccess   = false;
+
+    if ($scope.lastOrderId) {
+      fetch(SUPABASE_URL + "/orders?id=eq." + $scope.lastOrderId, {
+        method: 'DELETE',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        }
+      });
+      $scope.lastOrderId = null;
+    }
+  };
+
   $scope.submitOrder = function() {
     if (!$scope.cart.length) return;
     $scope.submitting = true;
@@ -56,26 +77,29 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal'
+        'Prefer': 'return=representation'
       },
       body: JSON.stringify(payload)
     }).then(function(res) {
-      $scope.$apply(function() {
-        $scope.submitting = false;
-        if (res.ok) {
-          $scope.cart = [];
-          localStorage.removeItem('cart');
-          alert('Order placed successfully!');
-        } else {
-          alert('Error ' + res.status);
-        }
+      return res.json().then(function(data) {
+        $scope.$apply(function() {
+          $scope.submitting = false;
+          if (res.ok) {
+            $scope.lastOrderId    = data[0].id;
+            $scope.cart           = [];
+            localStorage.removeItem('cart');
+            $scope.orderSuccess   = true;
+            $scope.orderCancelled = false;
+          }
+        });
       });
     }).catch(function() {
       $timeout(function() {
-        $scope.submitting = false;
-        $scope.cart = [];
+        $scope.submitting     = false;
+        $scope.cart           = [];
         localStorage.removeItem('cart');
-        alert('Order placed!');
+        $scope.orderSuccess   = true;
+        $scope.orderCancelled = false;
       }, 1000);
     });
   };

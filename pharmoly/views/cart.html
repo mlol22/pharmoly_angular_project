@@ -3,10 +3,15 @@
   <div class="navbar-box d-flex justify-content-between align-items-center mb-4">
     <h3 style="color:#009688;font-weight:bold">Pharmoly 🍃</h3>
     <input class="form-control w-50" placeholder="Search cart..." ng-model="searchText">
-    <a href="#!/" class="btn position-relative" style="background:#009688;color:white">
-      <i class="fa fa-cart-shopping"></i>
-      <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">{{cart.length}}</span>
-    </a>
+    <div class="d-flex align-items-center gap-2">
+      <a href="#!/profile" class="text-decoration-none" style="color:#009688;font-size:1.3rem;">
+        <i class="fa-regular fa-user"></i>
+      </a>
+      <a href="#!/" class="btn position-relative" style="background:#009688;color:white">
+        <i class="fa fa-cart-shopping"></i>
+        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">{{cart.length}}</span>
+      </a>
+    </div>
   </div>
 
   <div class="mb-3">
@@ -18,7 +23,7 @@
     <i class="fa fa-receipt me-2"></i>My Cart
   </h4>
 
-
+  <!-- SUCCESS MESSAGE -->
   <div class="p-3 rounded-3 text-center mb-4"
        style="background:#e8f5e9; color:#2e7d32;"
        ng-if="orderSuccess">
@@ -26,7 +31,7 @@
     <div class="mt-1 small">Redirecting to home in {{countdown}} seconds...</div>
   </div>
 
-
+  <!-- CANCELLED MESSAGE -->
   <div class="p-3 rounded-3 text-center mb-4"
        style="background:#ffebee; color:#c62828;"
        ng-if="orderCancelled">
@@ -62,15 +67,15 @@
         </div>
         <span class="price">${{(item.price * item.qty).toFixed(2)}}</span>
         <button class="btn btn-sm btn-outline-danger rounded-pill" ng-click="removeItem(item)">
-
           <i class="fa fa-xmark"></i>
         </button>
       </div>
     </div>
 
     <div class="col-lg-4">
-      <div class="summary-box" ng-if="cart.length > 0">
 
+      <!-- SUMMARY BOX — shown when cart has items -->
+      <div class="summary-box" ng-if="cart.length > 0">
         <h5 class="fw-bold mb-3">Order Summary</h5>
         <div class="d-flex justify-content-between mb-2 text-muted" ng-repeat="item in cart">
           <span>
@@ -98,7 +103,7 @@
         </button>
       </div>
 
-      
+      <!-- CANCEL BOX — shown after order submitted -->
       <div class="summary-box text-center" ng-if="orderSuccess">
         <p class="text-muted mb-3">Changed your mind?</p>
         <button class="btn w-100 rounded-pill fw-bold btn-outline-danger"

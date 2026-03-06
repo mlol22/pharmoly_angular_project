@@ -1,0 +1,169 @@
+<div class="container py-4">
+
+  <div class="navbar-box d-flex justify-content-between align-items-center mb-4">
+    <h3 style="color:#009688;font-weight:bold">Pharmoly 🍃</h3>
+    <div class="d-flex gap-3 align-items-center">
+      <a href="#!/" class="text-decoration-none" style="color:#009688;">Home</a>
+      <a href="#!/products" class="text-decoration-none" style="color:#009688;">Shop</a>
+      <a href="#!/cart" class="text-decoration-none" style="color:#009688;">Cart</a>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- PROFILE CARD for user -->
+    <div class="col-lg-4">
+      <div class="summary-box text-center">
+        <div class="mb-3" style="width:90px;height:90px;background:#e0f2f1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+          <i class="fa fa-user fa-2x" style="color:#009688;"></i>
+        </div>
+        <h5 class="fw-bold">{{profile.name || 'Your Name'}}</h5>
+        <p class="text-muted small mb-1">{{profile.email || 'your@email.com'}}</p>
+        <p class="text-muted small mb-1">{{profile.phone || 'Phone not set'}}</p>
+        <p class="text-muted small mb-3">{{profile.address || 'Address not set'}}</p>
+        <span class="badge rounded-pill px-3 py-2" style="background:#e0f2f1;color:#009688;">
+          {{orders.length}} Orders
+        </span>
+      </div>
+    </div>
+
+  
+    <div class="col-lg-8">
+
+      
+      <div class="summary-box mb-4" ng-if="!editMode">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold m-0" style="color:#009688;"><i class="fa fa-user me-2"></i>My Information</h5>
+          <button class="btn btn-outline-success rounded-pill btn-sm px-3" ng-click="startEdit()">
+            <i class="fa fa-pen me-1"></i> Edit Profile
+          </button>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="text-muted small mb-1">Full Name</div>
+            <div class="fw-bold">{{profile.name || '—'}}</div>
+          </div>
+          <div class="col-6">
+            <div class="text-muted small mb-1">Email</div>
+            <div class="fw-bold">{{profile.email || '—'}}</div>
+          </div>
+          <div class="col-6">
+            <div class="text-muted small mb-1">Phone</div>
+            <div class="fw-bold">{{profile.phone || '—'}}</div>
+          </div>
+          <div class="col-6">
+            <div class="text-muted small mb-1">Address</div>
+            <div class="fw-bold">{{profile.address || '—'}}</div>
+          </div>
+        </div>
+      </div>
+
+     <!-- edit area where we can edit name email and addresss-->
+      <div class="summary-box mb-4" ng-if="editMode">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold m-0" style="color:#009688;"><i class="fa fa-pen me-2"></i>Edit Profile</h5>
+          <button class="btn btn-outline-secondary rounded-pill btn-sm px-3" ng-click="cancelEdit()">
+            <i class="fa fa-xmark me-1"></i> Cancel
+          </button>
+        </div>
+
+        <!--saving messages here-->
+        <div class="p-2 rounded-3 text-center mb-3" style="background:#e8f5e9;color:#2e7d32;" ng-if="saveSuccess">
+          <i class="fa fa-check-circle me-1"></i> Profile saved successfully!
+        </div>
+        <div class="p-2 rounded-3 mb-3" style="background:#ffebee;color:#c62828;" ng-if="errors.length > 0">
+          <i class="fa fa-xmark me-1"></i>
+          <span ng-repeat="e in errors">{{e}}<br></span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Full Name <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" ng-model="draft.name" placeholder="Enter your full name"
+                 ng-class="{'is-invalid': submitted && !draft.name}">
+          <div class="invalid-feedback">Name is required.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+          <input type="email" class="form-control" ng-model="draft.email" placeholder="Enter your email"
+                 ng-class="{'is-invalid': submitted && !validEmail(draft.email)}">
+          <div class="invalid-feedback">Please enter a valid email.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Phone</label>
+          <input type="text" class="form-control" ng-model="draft.phone" placeholder="e.g. +1 234 567 8900"
+                 ng-class="{'is-invalid': submitted && draft.phone && !validPhone(draft.phone)}">
+          <div class="invalid-feedback">Please enter a valid phone number.</div>
+        </div>
+        <div class="mb-3">
+
+          <label class="form-label fw-bold">Address</label>
+          <input type="text" class="form-control" ng-model="draft.address" placeholder="Enter your address">
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn w-100 rounded-pill fw-bold text-white"
+                  style="background:#009688;"
+                  ng-click="saveProfile()" ng-disabled="saving">
+            <span ng-if="!saving"><i class="fa fa-save me-2"></i>Save Changes</span>
+            <span ng-if="saving">Saving...</span>
+          </button>
+          <button class="btn btn-outline-danger rounded-pill px-4 fw-bold" ng-click="cancelEdit()">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="summary-box">
+
+        <h5 class="fw-bold mb-4" style="color:#009688;"><i class="fa fa-receipt me-2"></i>My Orders</h5>
+
+        <div class="text-center py-4 text-muted" ng-if="orders.length === 0">
+          <i class="fa fa-box-open fa-2x mb-2" style="color:#c8e6e3;display:block;"></i>
+          No orders yet. <a href="#!/products" style="color:#009688;">Go shop!</a>
+        </div>
+
+        <div class="cart-card mb-3" ng-repeat="order in orders">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-bold" style="color:#009688;">Order #{{order.id}}</span>
+            <span class="badge rounded-pill px-3 py-2"
+                  ng-style="{'background': order.status === 'pending' ? '#e0f2f1' : '#ffebee',
+                             'color':      order.status === 'pending' ? '#009688'  : '#c62828'}">
+              {{order.status}}
+            </span>
+          </div>
+          <div class="text-muted small mb-3">
+            <i class="fa fa-calendar me-1"></i>
+            {{order.created_at | date:'MMM d, y — h:mm a'}}
+          </div>
+          <div class="mb-2" ng-repeat="item in order.items">
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+              <div class="d-flex align-items-center gap-2">
+                <img ng-src="{{item.image}}" ng-if="item.image"
+                     style="width:45px;height:45px;object-fit:contain;border-radius:8px;background:#f5f5f5;padding:3px;">
+                <div ng-if="!item.image"
+                     style="width:45px;height:45px;border-radius:8px;background:#e0f2f1;display:flex;align-items:center;justify-content:center;">
+                  <i class="fa fa-pills" style="color:#009688;"></i>
+                </div>
+                <span>{{item.name}} <span class="text-muted small">x{{item.qty}}</span></span>
+              </div>
+              <span class="fw-bold" style="color:#009688;">${{(item.price * item.qty).toFixed(2)}}</span>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">{{order.items.length}} item(s)</small>
+            <span class="fw-bold fs-6" style="color:#009688;">Total: ${{order.total}}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -42,6 +42,10 @@ app.controller('HomeController', function($scope, $http, SUPABASE_URL, SUPABASE_
 
   $http.get(SUPABASE_URL + "/products?featured=eq.true&select=*", config).then(function(res) {
     $scope.featuredProducts = res.data;
+    setTimeout(function() {
+      var el = document.getElementById('featuredCarousel');
+      if (el) { new bootstrap.Carousel(el, { interval: 3000 }); }
+    }, 500);
   });
 
   $scope.addToCart = function(product) {

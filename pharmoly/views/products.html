@@ -4,6 +4,9 @@
     <h3 style="color:#009688;font-weight:bold">Pharmoly 🍃</h3>
     <input class="form-control w-50" placeholder="Search products..." ng-model="searchText">
     <div class="d-flex align-items-center gap-2">
+      <a href="#!/profile" class="text-decoration-none" style="color:#009688;font-size:1.3rem;">
+        <i class="fa-regular fa-user"></i>
+      </a>
       <button class="btn btn-outline-danger rounded-pill"
               ng-if="cart.length > 0"
               ng-click="cancelOrder()">

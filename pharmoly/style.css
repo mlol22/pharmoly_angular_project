@@ -4,7 +4,7 @@ body { font-family: Poppins, sans-serif; background: #f7fbfa; }
 .promo-banner span { margin:0 20px; }
 
 .navbar-box { background:white; padding:15px; border-radius:15px; box-shadow:0 2px 15px rgba(0,0,0,0.05); }
-
+/* Custom styles for the navbar and product cards to enhance the visual appeal */
 .product-card { background:white; border-radius:18px; padding:18px; text-align:center; transition:.3s; height:100%; }
 .product-card:hover { transform:translateY(-6px); box-shadow:0 15px 30px rgba(0,0,0,0.08); }
 .product-card img { height:180px; object-fit:contain; }
@@ -14,7 +14,7 @@ body { font-family: Poppins, sans-serif; background: #f7fbfa; }
 .banner { background:linear-gradient(135deg,#dff6f1,#bcefe5); border-radius:25px; padding:80px; margin:60px 0; }
 
 .price { color:#009688; font-weight:bold; }
-
+/* Custom badges for products where there is sale popular and etc with different colors */
 .badge-custom  { position:absolute; top:15px; left:15px; color:white; padding:5px 12px; border-radius:20px; font-size:12px; background:#009688; }
 .badge-sale    { background:#e53935 !important; }
 .badge-hot     { background:#ff6f00 !important; }
@@ -32,7 +32,7 @@ body { font-family: Poppins, sans-serif; background: #f7fbfa; }
 .category-box:hover i { color:white !important; }
 
 .card:hover { transform:translateY(-6px); transition:0.3s; }
-
+/* Custom styles for the trust section and testimonials to create a more engaging and trustworthy feel */
 .trust-box { background:white; border-radius:15px; padding:25px 20px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.05); transition:0.3s; }
 .trust-box:hover { transform:translateY(-4px); }
 .trust-box i { font-size:2rem; color:#009688; margin-bottom:10px; display:block; }

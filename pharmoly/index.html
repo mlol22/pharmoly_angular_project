@@ -17,9 +17,10 @@
 <script src="controllers/homeController.js"></script>
 <script src="controllers/productController.js"></script>
 <script src="controllers/cartController.js"></script>
+<script src="controllers/profileController.js"></script>
 
 </head>
-<body>
+<body ng-controller="AppController">
 
 <div class="promo-banner">
   <span>🔥 Flash Sale — Up to 40% off supplements</span>
@@ -27,6 +28,13 @@
   <span>🚚 Free shipping on orders over $50</span>
   <span>|</span>
   <span>💊 New arrivals every week</span>
+</div>
+
+<!-- PROFILE BADGE -->
+<div ng-if="userName" style="background:#e0f2f1;padding:6px 16px;text-align:right;" class="small">
+  <a href="#!/profile" class="text-decoration-none" style="color:#009688;">
+    <i class="fa-regular fa-user me-1"></i> {{userName}}
+  </a>
 </div>
 
 <div ng-view></div>

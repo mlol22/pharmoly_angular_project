@@ -1,10 +1,13 @@
 app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABASE_KEY) {
-
   $scope.searchText     = '';
   $scope.submitting     = false;
+
   $scope.orderSuccess   = false;
+
   $scope.orderCancelled = false;
+
   $scope.lastOrderId    = null;
+
   $scope.countdown      = 0;
 
   function groupCart(raw) {
@@ -56,6 +59,7 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
           'Authorization': 'Bearer ' + SUPABASE_KEY
         }
       });
+
       $scope.lastOrderId = null;
     }
 
@@ -72,18 +76,21 @@ app.controller('CartController', function($scope, $timeout, SUPABASE_URL, SUPABA
     if (!$scope.cart.length) return;
     $scope.submitting = true;
 
+    var profile = JSON.parse(localStorage.getItem('profile') || '{}');
+
     var payload = {
-      items: $scope.cart.map(function(i) {
+                                items: $scope.cart.map(function(i) {
         return { product_id: i.id, name: i.name, qty: i.qty, price: i.price };
       }),
       total: $scope.total(),
       created_at: new Date().toISOString(),
-      status: 'pending'
+      status: 'pending',
+      user_email: profile.email || null
     };
 
     fetch(SUPABASE_URL + "/orders", {
-      method: 'POST',
-      headers: {
+         method: 'POST',
+                  headers: {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY,
